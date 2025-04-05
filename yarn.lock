@@ -881,6 +881,15 @@
     "tslib" "2.8.1"
     "uid" "2.0.2"
 
+"@nestjs/config@^4.0.2":
+  "integrity" "sha512-McMW6EXtpc8+CwTUwFdg6h7dYcBUpH5iUILCclAsa+MbCEvC9ZKu4dCHRlJqALuhjLw97pbQu62l4+wRwGeZqA=="
+  "resolved" "https://registry.npmjs.org/@nestjs/config/-/config-4.0.2.tgz"
+  "version" "4.0.2"
+  dependencies:
+    "dotenv" "16.4.7"
+    "dotenv-expand" "12.0.1"
+    "lodash" "4.17.21"
+
 "@nestjs/core@^11.0.0", "@nestjs/core@^11.0.1", "@nestjs/core@^11.0.13":
   "integrity" "sha512-1xjrsYjff4sg4MfvF+/NInOq+7oI1D1vK8Yj9wkrbBH1dM+h2At71tccbFfl/eJUt4ckZlH+XmROnt/T0daYcA=="
   "resolved" "https://registry.npmjs.org/@nestjs/core/-/core-11.0.13.tgz"
@@ -2121,6 +2130,18 @@
   "integrity" "sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A=="
   "resolved" "https://registry.npmjs.org/diff/-/diff-4.0.2.tgz"
   "version" "4.0.2"
+
+"dotenv-expand@12.0.1":
+  "integrity" "sha512-LaKRbou8gt0RNID/9RoI+J2rvXsBRPMV7p+ElHlPhcSARbCPDYcYG2s1TIzAfWv4YSgyY5taidWzzs31lNV3yQ=="
+  "resolved" "https://registry.npmjs.org/dotenv-expand/-/dotenv-expand-12.0.1.tgz"
+  "version" "12.0.1"
+  dependencies:
+    "dotenv" "^16.4.5"
+
+"dotenv@^16.4.5", "dotenv@16.4.7":
+  "integrity" "sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ=="
+  "resolved" "https://registry.npmjs.org/dotenv/-/dotenv-16.4.7.tgz"
+  "version" "16.4.7"
 
 "dunder-proto@^1.0.1":
   "integrity" "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A=="
