@@ -11,6 +11,7 @@ async function bootstrap() {
     .setDescription('THIS IS MINI BANK SERVICE')
     .setVersion('1.0')
     .addTag('bank cash money')
+    .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, documentFactory);

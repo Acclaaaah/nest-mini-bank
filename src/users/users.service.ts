@@ -24,12 +24,17 @@ export class UsersService {
     }))
   }
 
-  findOne(id: number) {
-    return this.usersRepository.findOneBy({id: id});
+  async findOne(id: number) {
+    const result = await this.usersRepository.findOneBy({id: id});
+    return {...result, password: undefined};
+  }
+
+  findByUsername(username: string) {
+    return this.usersRepository.findOneBy({username})
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.usersRepository.update(id, updateUserDto);
   }
 
   remove(id: number) {
