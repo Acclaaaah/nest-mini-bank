@@ -10,8 +10,8 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>
-  ) {
-  }
+  ) {}
+
   create(createUserDto: CreateUserDto) {
     return this.usersRepository.save(createUserDto);
   }
@@ -21,20 +21,27 @@ export class UsersService {
     return results.map(user => ({
       ...user,
       password: undefined
-    }))
+    }));
   }
 
   async findOne(id: number) {
-    const result = await this.usersRepository.findOneBy({id: id});
-    return {...result, password: undefined};
+    const result = await this.usersRepository.findOneBy({ id: id });
+    return { ...result, password: undefined };
   }
 
   findByUsername(username: string) {
-    return this.usersRepository.findOneBy({username})
+    return this.usersRepository.findOneBy({ username });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.usersRepository.update(id, updateUserDto);
+
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<Partial<User>> {
+    await this.usersRepository.update(id, updateUserDto);
+    const updatedUser = await this.usersRepository.findOne({ where: { id } });
+
+    if (!updatedUser) return null;
+
+    const { password, ...sanitizedUser } = updatedUser;
+    return sanitizedUser;
   }
 
   remove(id: number) {
