@@ -1,6 +1,7 @@
 // src/accounts/account.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../users/entities/user.entity';
+import { Withdrawal } from '../withdrawals/withdrawal.entity';
 
 @Entity()
 export class Account {
@@ -15,4 +16,7 @@ export class Account {
 
   @ManyToOne(() => User, user => user.accounts)
   user: User;
+
+  @OneToMany(() => Withdrawal, withdrawal => withdrawal.account)
+  withdrawals: Withdrawal[];
 }

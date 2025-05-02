@@ -11,7 +11,9 @@ import { Account } from './accounts/account.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/role.guard';
 import { AuthModule } from './auth/auth.module';
-import { AccountsModule } from './accounts/accounts.module'; 
+import { AccountsModule } from './accounts/account.module'; 
+import { WithdrawalsModule } from './withdrawals/withdrawals.module';
+import { Withdrawal } from './withdrawals/withdrawal.entity';
 
 @Module({
   imports: [
@@ -24,14 +26,15 @@ import { AccountsModule } from './accounts/accounts.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'Anonbob2001!',
+      password: 'root',
       database: 'MiniBankingDB',
-      entities: [User, Account], 
-      synchronize: true, 
+      entities: [User, Account, Withdrawal], 
+      synchronize: false, 
     }),
     UsersModule,
     AuthModule,
     AccountsModule,
+    WithdrawalsModule,
   ],
   controllers: [AppController],
   providers: [
