@@ -1,6 +1,7 @@
 // src/accounts/account.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { User } from '../users/entities/user.entity';
+import { Transaction } from '../transactions/transaction.entity';
 
 @Entity()
 export class Account {
@@ -15,4 +16,5 @@ export class Account {
 
   @ManyToOne(() => User, user => user.accounts)
   user: User;
+  transactions: Transaction[]; 
 }
