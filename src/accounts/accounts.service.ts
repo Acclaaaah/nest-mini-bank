@@ -1,4 +1,3 @@
-// src/accounts/accounts.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -22,14 +21,13 @@ export class AccountsService {
     return this.accountsRepository.find();
   }
 
-  // Updated findOne method
   findOne(id: number) {
-    return this.accountsRepository.findOne({ where: { id } }); // Use `where` to specify the condition
+    return this.accountsRepository.findOne({ where: { id } }); 
   }
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {
     await this.accountsRepository.update(id, updateAccountDto);
-    return this.accountsRepository.findOne({ where: { id } }); // Use `where` here too
+    return this.accountsRepository.findOne({ where: { id } }); 
   }
 
   remove(id: number) {
