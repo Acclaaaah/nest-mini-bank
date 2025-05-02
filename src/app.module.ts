@@ -24,7 +24,7 @@ import { AccountsModule } from './accounts/accounts.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'Anonbob2001!',
+      password: 'root',
       database: 'MiniBankingDB',
       entities: [User, Account], 
       synchronize: true, 
