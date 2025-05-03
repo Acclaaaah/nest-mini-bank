@@ -7,17 +7,17 @@ import { Transaction } from 'src/transactions/entities/transaction.entity';
 @Entity()
 export class Account {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  accountType: 'checking' | 'savings';
+  accountType!: 'checking' | 'savings';
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
-  balance: number;
+  balance!: number;
 
   @ManyToOne(() => User, user => user.accounts)
-  user: User;
+  user!: User;
 
   @OneToMany(() => Transaction, trans => trans.account)
-  transactions: ITransaction[]
+  transactions!: ITransaction[]
 }
