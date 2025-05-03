@@ -2,7 +2,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
@@ -20,15 +20,21 @@ import { TransactionsModule } from './transactions/transactions.module';
       envFilePath: 'dev.env',
       load: [configuration],
     }),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'Anonbob2001!',
-      database: 'MiniBankingDB',
-      entities: [User, Account], 
-      synchronize: true, 
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        return {
+          type: 'mysql',
+          host: configService.get<string>('database.host') || 'localhost',
+          port: configService.get<number>('database.port') || 3306,
+          username: configService.get('database.username') ||'root',
+          password: configService.get('database.pass') ||'root',
+          database: 'MiniBankingDB',
+          entities: [User, Account], 
+          synchronize: true, 
+        }
+      },
+      inject: [ConfigService]
     }),
     UsersModule,
     AuthModule,

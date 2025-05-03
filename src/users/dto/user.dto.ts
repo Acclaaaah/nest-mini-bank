@@ -2,10 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UserDto {
     @ApiProperty()
-    id: number;
+    id!: number;
     @ApiProperty()
-    username: string;
-    password: string;
+    username!: string;
+    password!: string;
     @ApiProperty({
         nullable: true
     })

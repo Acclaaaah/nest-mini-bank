@@ -5,29 +5,29 @@ import { Account } from 'src/accounts/account.entity';
 @Entity('User')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 75 })
-  username: string;
+  username!: string;
 
   @Column({ length: 255 })
-  password: string;
+  password!: string;
 
   @Column({ length: 255, nullable: true })
-  firstName: string;
+  firstName!: string;
 
   @Column({ length: 255, nullable: true })
-  lastName: string;
+  lastName!: string;
 
   @Column({ type: 'enum', enum: Role })
-  role: Role;
+  role!: Role;
 
   @Column({ nullable: true })
-  address: string;
+  address!: string;
 
   @Column({ nullable: true })
-  phoneNumber: string;
+  phoneNumber!: string;
 
   @OneToMany(() => Account, account => account.user)
-  accounts: Account[];
+  accounts!: Account[];
 }
