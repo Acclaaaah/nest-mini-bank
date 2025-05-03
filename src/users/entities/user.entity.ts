@@ -1,9 +1,9 @@
-import { Role } from 'src/enums/role.enum';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { IUser, Role } from 'src/entities';
 import { Account } from 'src/accounts/account.entity';
 
 @Entity('User')
-export class User {
+export class User implements IUser {
   @PrimaryGeneratedColumn()
   id: number;
 
