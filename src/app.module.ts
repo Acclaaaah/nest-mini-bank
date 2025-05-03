@@ -1,4 +1,3 @@
-// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,11 +6,14 @@ import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
-import { Account } from './accounts/account.entity'; 
+import { Account } from './accounts/account.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/role.guard';
 import { AuthModule } from './auth/auth.module';
-import { AccountsModule } from './accounts/accounts.module'; 
+import { AccountsModule } from './accounts/accounts.module';
+import { LoanModule } from './loan/loan.module';
+import { Loan } from './loan/entities/loan.entity'; // Import Loan entity
+import { Repayment } from './loan/entities/repayment.entity'; // Import Repayment entity
 import { TransactionsModule } from './transactions/transactions.module';
 import { Transaction } from './transactions/transaction.entity';
 
@@ -31,7 +33,7 @@ import { Transaction } from './transactions/transaction.entity';
           username: configService.get('database.username') ||'root',
           password: configService.get('database.pass') ||'root',
           database: 'MiniBankingDB',
-          entities: [User, Account, Transaction], 
+          entities: [User, Account, Transaction, Loan, Repayment], 
           synchronize: true, 
         }
       },
@@ -40,6 +42,7 @@ import { Transaction } from './transactions/transaction.entity';
     UsersModule,
     AuthModule,
     AccountsModule,
+    LoanModule,
     TransactionsModule,
   ],
   controllers: [AppController],
