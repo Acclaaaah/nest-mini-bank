@@ -5,6 +5,7 @@ import { Transaction } from './entities/transaction.entity';
 import { Account } from '../accounts/account.entity'; 
 import { TransferDto, FilterTransactionsDto } from './dto/create-transaction.dto'; 
 import { TransactionType } from 'src/entities';
+import { DepositDto } from './dto/deposit.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -92,5 +93,27 @@ export class TransactionsService {
       net: totalIn - totalOut,
       transactions,
     };
+  }
+
+  async deposit(depositDto: DepositDto) {
+    const { accountId, amount } = depositDto;
+
+    const account = await this.accountRepo.findOne({ where: { id: accountId } });
+    if (!account) {
+      throw new Error('Account not found');
+    }
+
+    // Update account balance
+    account.balance = Number(account.balance) + Number(amount);
+    await this.accountRepo.save(account);
+
+    // Log the transaction
+    const transaction = this.transactionRepo.create({
+      account,
+      amount,
+      type: TransactionType.DEPOSIT
+    });
+
+    return this.transactionRepo.save(transaction);
   }
 }

@@ -5,7 +5,7 @@ import { UpdateLoanDto } from './dto/update-loan.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/guards/role.guard';
 import { Roles } from 'src/decorators/role.decorator';
-import { Role } from 'src/enums/role.enum';
+import { Role } from 'src/entities';
 
 @Controller('loans')
 export class LoanController {

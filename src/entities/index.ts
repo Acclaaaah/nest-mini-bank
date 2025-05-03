@@ -31,6 +31,7 @@ export interface IAccount {
   export enum TransactionType {
     DEBIT = 'DEBIT',
     CREDIT = 'CREDIT',
+    DEPOSIT = 'DEPOSIT'
   }
 export interface ITransaction {
   id: number
