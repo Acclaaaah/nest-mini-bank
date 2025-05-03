@@ -24,7 +24,7 @@ export class TransactionsService {
     }
 
     // Update account balance
-    account.balance += Number(amount);
+    account.balance = Number(account.balance) + Number(amount);
     await this.accountRepo.save(account);
 
     // Log the transaction
