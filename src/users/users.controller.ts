@@ -21,9 +21,9 @@ import {
 } from '@nestjs/swagger';
 import { UserDto } from './dto/user.dto';
 import { Roles } from 'src/decorators/role.decorator';
-import { Role } from 'src/enums/role.enum';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Request as ExpressRequest } from 'express';
+import { Role } from 'src/entities';
 
 interface AuthenticatedRequest extends ExpressRequest {
   user: {

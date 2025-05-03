@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTransactionDto {
   @ApiProperty()
-  type: 'DEBIT' | 'CREDIT';
+  type!: 'DEBIT' | 'CREDIT';
 
   @ApiProperty()
   amount: number;

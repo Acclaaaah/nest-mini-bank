@@ -8,11 +8,15 @@ import {
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { TransferDto, FilterTransactionsDto } from './dto/create-transaction.dto'; 
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Roles } from 'src/decorators/role.decorator';
+import { Role } from 'src/entities';
 
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly service: TransactionsService) {}
-
+  @ApiBearerAuth()
+  @Roles(Role.User)
   @Post('transfer')
   transfer(@Body() transferDto: TransferDto) {
     return this.service.transferFunds(transferDto);

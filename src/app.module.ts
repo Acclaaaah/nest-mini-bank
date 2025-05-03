@@ -31,8 +31,8 @@ import { TransactionsModule } from './transactions/transactions.module';
           username: configService.get('database.username') ||'root',
           password: configService.get('database.pass') ||'root',
           database: 'MiniBankingDB',
-          entities: [User, Account], 
-          synchronize: true, 
+          entities: [User, Account, Transaction], 
+          synchronize: false, 
         }
       },
       inject: [ConfigService]

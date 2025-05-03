@@ -24,13 +24,13 @@ export class TransactionsService {
 
 
     if (!from || !to) throw new NotFoundException('Account not found');
-    if (from.balance < amount) throw new BadRequestException('Insufficient funds');
+    if (Number(from.balance) < amount) throw new BadRequestException('Insufficient funds');
 
     // Debit from source
-    from.balance -= amount;
+    from.balance = Number(from.balance) - amount;
 
     // Credit to destination
-    to.balance += amount;
+    to.balance = Number(to.balance) + amount;
 
     // Save accounts
     await this.accountRepo.save([from, to]);
