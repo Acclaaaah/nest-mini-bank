@@ -36,7 +36,7 @@ export class WithdrawalsService {
     return this.withdrawalRepo.save(withdrawal);
   }
 
-  // (Optional) Get all withdrawals
+  //  Get all withdrawals
   findAll() {
     return this.withdrawalRepo.find({ relations: ['account'] });
   }

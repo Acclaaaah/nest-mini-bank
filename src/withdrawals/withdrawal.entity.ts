@@ -1,4 +1,4 @@
-// src/withdrawals/withdrawal.entity.ts
+
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
 import { Account } from '../accounts/account.entity';
 

@@ -1,4 +1,4 @@
-// src/withdrawals/withdrawals.module.ts
+
 import { Module } from '@nestjs/common';
 import { WithdrawalsService } from './withdrawals.service';
 import { WithdrawalsController } from './withdrawals.controller';

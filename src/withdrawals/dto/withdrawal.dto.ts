@@ -1,5 +1,3 @@
-// import { IsNumber, Min } from 'class-validator';
-
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateWithdrawalDto {
@@ -9,5 +7,6 @@ export class CreateWithdrawalDto {
   
   // @IsNumber()
   // @Min(0.01)
+  @ApiProperty()
   amount: number;
 }
