@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IUser, Role } from 'src/entities';
 import { Account } from 'src/accounts/account.entity';
+import { Loan } from 'src/loan/entities/loan.entity';
 
 @Entity('User')
 export class User implements IUser {
@@ -29,5 +30,9 @@ export class User implements IUser {
   phoneNumber!: string;
 
   @OneToMany(() => Account, account => account.user)
-  accounts!: Account[];
+  accounts: Account[];
+
+  @OneToMany(() => Loan, loan => loan.user) // Add the OneToMany relationship with Loan
+  loans: Loan[];
+
 }

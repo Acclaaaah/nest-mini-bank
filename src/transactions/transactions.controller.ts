@@ -11,6 +11,7 @@ import { TransferDto, FilterTransactionsDto } from './dto/create-transaction.dto
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/entities';
+import { DepositDto } from './dto/deposit.dto';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -33,5 +34,9 @@ export class TransactionsController {
   @Get(':accountId/report')
   getReport(@Param('accountId') accountId: string) {
     return this.service.generateReport(accountId);
+  }
+  @Post('deposit')
+  deposit(@Body() depositDto: DepositDto) {
+    return this.service.deposit(depositDto);
   }
 }

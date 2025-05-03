@@ -27,6 +27,7 @@
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.13",
+    "@nestjs/schematics": "^11.0.5",
     "@nestjs/swagger": "^11.1.6",
     "@nestjs/typeorm": "^11.0.0",
     "bcryptjs": "^3.0.2",
@@ -44,7 +45,6 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.6",
-    "@nestjs/schematics": "^11.0.3",
     "@nestjs/testing": "^11.0.13",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
