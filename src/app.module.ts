@@ -10,12 +10,12 @@ import { Account } from './accounts/account.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/role.guard';
 import { AuthModule } from './auth/auth.module';
-import { AccountsModule } from './accounts/accounts.module';
-import { LoanModule } from './loan/loan.module';
-import { Loan } from './loan/entities/loan.entity'; // Import Loan entity
-import { Repayment } from './loan/entities/repayment.entity'; // Import Repayment entity
+import { AccountsModule } from './accounts/account.module'; 
+import { Transaction } from './transactions/entities/transaction.entity'; // ✅
 import { TransactionsModule } from './transactions/transactions.module';
-import { Transaction } from './transactions/transaction.entity';
+import { Loan } from './loan/entities/loan.entity';
+import { Repayment } from './loan/entities/repayment.entity';
+import { LoanModule } from './loan/loan.module';
 
 @Module({
   imports: [
@@ -42,6 +42,7 @@ import { Transaction } from './transactions/transaction.entity';
     UsersModule,
     AuthModule,
     AccountsModule,
+    TransactionsModule,
     LoanModule,
     TransactionsModule,
   ],
