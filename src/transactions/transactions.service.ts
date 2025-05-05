@@ -116,4 +116,26 @@ export class TransactionsService {
 
     return this.transactionRepo.save(transaction);
   }
+  async getAllTransactions(user: any): Promise<Transaction[]> {
+    if (user.role === 'admin') {
+      return this.transactionRepo.find({
+        order: { createdAt: 'DESC' },
+        relations: ['account'],
+      });
+    }
+  
+    // Find all transactions where this user is involved (as account owner)
+    const userAccounts = await this.accountRepo.find({
+      where: { user: { id: user.userId } },
+    });
+  
+    const accountIds = userAccounts.map(acc => acc.id);
+    if (accountIds.length === 0) return [];
+  
+    return this.transactionRepo.find({
+      where: accountIds.map(id => ({ account: { id } })),
+      order: { createdAt: 'DESC' },
+      relations: ['account'],
+    });
+  }
 }
