@@ -14,6 +14,9 @@ import { AuthModule } from './auth/auth.module';
 import { AccountsModule } from './accounts/account.module'; 
 import { WithdrawalsModule } from './withdrawals/withdrawals.module';
 import { Withdrawal } from './withdrawals/withdrawal.entity';
+import { BalanceInquiryModule } from './balance-inquiry/balance-inquiry.module';
+import { BalanceInquiry } from './balance-inquiry/balance-inquiry.entity';
+
 
 @Module({
   imports: [
@@ -28,13 +31,14 @@ import { Withdrawal } from './withdrawals/withdrawal.entity';
       username: 'root',
       password: 'root',
       database: 'MiniBankingDB',
-      entities: [User, Account, Withdrawal], 
+      entities: [User, Account, Withdrawal, BalanceInquiry], 
       synchronize: false, 
     }),
     UsersModule,
     AuthModule,
     AccountsModule,
     WithdrawalsModule,
+    BalanceInquiryModule,
   ],
   controllers: [AppController],
   providers: [
