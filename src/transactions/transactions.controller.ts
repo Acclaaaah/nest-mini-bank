@@ -23,6 +23,8 @@ export class TransactionsController {
     return this.service.transferFunds(transferDto);
   }
 
+  @ApiBearerAuth()
+  @Roles(Role.User)
   @Get(':accountId/history')
   getHistory(
     @Param('accountId') accountId: string,
@@ -31,10 +33,15 @@ export class TransactionsController {
     return this.service.getTransactionHistory(accountId, filterDto);
   }
 
+  @ApiBearerAuth()
+  @Roles(Role.User)
   @Get(':accountId/report')
   getReport(@Param('accountId') accountId: string) {
     return this.service.generateReport(accountId);
   }
+
+  @ApiBearerAuth()
+  @Roles(Role.User)
   @Post('deposit')
   deposit(@Body() depositDto: DepositDto) {
     return this.service.deposit(depositDto);
