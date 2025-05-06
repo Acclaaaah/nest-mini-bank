@@ -41,6 +41,8 @@ export class TransactionsController {
   }
 
   
+  @ApiBearerAuth()
+  @Roles(Role.User)
   @Post('deposit')
   deposit(@Body() depositDto: DepositDto) {
     return this.service.deposit(depositDto);
