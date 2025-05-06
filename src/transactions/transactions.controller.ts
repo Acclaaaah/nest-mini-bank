@@ -40,7 +40,8 @@ export class TransactionsController {
     return this.service.generateReport(accountId);
   }
 
-  
+  @ApiBearerAuth()
+  @Roles(Role.User)
   @Post('deposit')
   deposit(@Body() depositDto: DepositDto) {
     return this.service.deposit(depositDto);
