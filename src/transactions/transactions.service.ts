@@ -80,7 +80,8 @@ export class TransactionsService {
     const transactions = await this.getTransactionHistory(accountId, {} as FilterTransactionsDto);
 
     const totalIn = transactions
-      .filter(tx => tx.type === 'CREDIT', 'DEPOSIT')
+      .filter(tx => tx.type === 'CREDIT' || tx.type ===  'DEPOSIT')
+
       .reduce((acc, tx) => acc + Number(tx.amount), 0);
 
     const totalOut = transactions
