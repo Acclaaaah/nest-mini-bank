@@ -85,7 +85,8 @@ export class TransactionsService {
       .reduce((acc, tx) => acc + Number(tx.amount), 0);
 
     const totalOut = transactions
-      .filter(tx => tx.type === 'DEBIT', 'WITHDRAW')
+      .filter(tx => tx.type === 'DEBIT' || tx.type ===  'WITHDRAW')
+
       .reduce((acc, tx) => acc + Number(tx.amount), 0);
 
     return {
