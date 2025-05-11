@@ -1,33 +1,38 @@
-import { Role } from 'src/enums/role.enum';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { IUser, Role } from 'src/entities';
 import { Account } from 'src/accounts/account.entity';
+import { Loan } from 'src/loan/entities/loan.entity';
 
 @Entity('User')
-export class User {
+export class User implements IUser {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ length: 75 })
-  username: string;
+  username!: string;
 
   @Column({ length: 255 })
-  password: string;
+  password!: string;
 
   @Column({ length: 255, nullable: true })
-  firstName: string;
+  firstName!: string;
 
   @Column({ length: 255, nullable: true })
-  lastName: string;
+  lastName!: string;
 
   @Column({ type: 'enum', enum: Role })
-  role: Role;
+  role!: Role;
 
   @Column({ nullable: true })
-  address: string;
+  address!: string;
 
   @Column({ nullable: true })
-  phoneNumber: string;
+  phoneNumber!: string;
 
   @OneToMany(() => Account, account => account.user)
   accounts: Account[];
+
+  @OneToMany(() => Loan, loan => loan.user) // Add the OneToMany relationship with Loan
+  loans: Loan[];
+
 }

@@ -1,64 +1,108 @@
-import { 
-  Controller, Get, Patch, Param, Delete, Body, UseGuards, Request 
+import {
+  Controller,
+  Get,
+  Patch,
+  Param,
+  Delete,
+  Body,
+  Post,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CreateUserDto } from './dto/create-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+} from '@nestjs/swagger';
 import { UserDto } from './dto/user.dto';
 import { Roles } from 'src/decorators/role.decorator';
-import { Role } from 'src/enums/role.enum';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Request as ExpressRequest } from 'express';
+import { Role } from 'src/entities';
+
+interface AuthenticatedRequest extends ExpressRequest {
+  user: {
+    sub: number; // user ID
+    username: string;
+    role: string;
+  };
+}
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  
+  @Post()
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiResponse({ status: 201, description: 'User created successfully' })
+  @ApiBody({ type: CreateUserDto })
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
+  }
+
+  
   @Get()
-  @ApiResponse({
-    status: 200,
-    type: [UserDto]
-  })
   @ApiBearerAuth()
   @Roles(Role.Admin)
-  @ApiOperation({
-    operationId: 'findUsers'
-  })
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ status: 200, type: [UserDto] })
   findAll() {
     return this.usersService.findAll();
   }
 
+  
+  @Get(':id')
   @ApiBearerAuth()
   @Roles(Role.User, Role.Admin)
-  @ApiOperation({
-    operationId: 'getUser'
-  })
-  @Get(':id')
+  @ApiOperation({ summary: 'Get user by ID' })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
 
-  @ApiBearerAuth()
-  @ApiOperation({
-    operationId: 'updateUser'
-  })
+ 
   @Patch(':id')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update user by ID' })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
-  @ApiBearerAuth()
-  @ApiOperation({
-    operationId: 'deleteUser'
-  })
+  
   @Delete(':id')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete user by ID' })
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
 
-  //  NEW: Logged-in user profile update endpoint
-  @UseGuards(JwtAuthGuard)
   @Patch('update')
-  async updateProfile(@Request() req, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(req.user.sub, updateUserDto); // use `sub` from JWT payload
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update current user profile' })
+  updateProfile(
+    @Request() req: AuthenticatedRequest,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.update(req.user.sub, updateUserDto);
+  }
+
+  
+  @Patch('change-password')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Change current user password' })
+  @ApiBody({ type: ChangePasswordDto })
+  async changePassword(
+    @Request() req: AuthenticatedRequest,
+    @Body() dto: ChangePasswordDto,
+  ) {
+    return this.usersService.changePassword(req.user.sub, dto);
   }
 }
