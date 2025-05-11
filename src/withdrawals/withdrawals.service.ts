@@ -37,7 +37,9 @@ export class WithdrawalsService {
   }
 
   //  Get all withdrawals
-  findAll() {
-    return this.withdrawalRepo.find({ relations: ['account'] });
+  findAll(accountId: number) {
+    return this.withdrawalRepo.find({ relations: ['account'], where: {
+      account: {id: accountId}
+    } });
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { WithdrawalsService } from './withdrawals.service';
 import { CreateWithdrawalDto } from './dto/withdrawal.dto';
 
@@ -11,8 +11,8 @@ export class WithdrawalsController {
     return this.withdrawalsService.create(createWithdrawalDto);
   }
 
-  @Get()
-  findAll() {
-    return this.withdrawalsService.findAll();
+  @Get(':accountId')
+  findAll(@Param('accountId') accountId: number) {
+    return this.withdrawalsService.findAll(accountId);
   }
 }
