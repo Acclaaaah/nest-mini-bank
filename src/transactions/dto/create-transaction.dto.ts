@@ -37,6 +37,7 @@ export class FilterTransactionsDto {
   @IsEnum(TransactionType)
   type?: TransactionType;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
   startDate?: string;
