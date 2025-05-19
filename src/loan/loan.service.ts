@@ -87,6 +87,24 @@ export class LoanService {
     async getLoanStatusAndHistory(loanId: number): Promise<Loan> {
         return this.findOne(loanId);
     }
+
+    async getLoanSummary(loanId: number): Promise<any> {
+        const loan = await this.findOne(loanId);
+        const interest = loan.amount * (loan.interestRate / 100);
+        const totalDue = loan.amount + interest;
+        const totalRepaid = loan.repayments.reduce((sum, rep) => sum + rep.amount, 0);
+        const balance = totalDue - totalRepaid;
+
+        return {
+            loanId: loan.id,
+            amount: loan.amount,
+            interest,
+            totalDue,
+            totalRepaid,
+            balance,
+            status: loan.status,
+        };
+        }
 }
 
     

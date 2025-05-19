@@ -38,7 +38,7 @@ import { LoanModule } from './loan/loan.module';
           password: configService.get('database.pass') ||'root',
           database: 'MiniBankingDB',
           entities: [User, Account, Withdrawal, BalanceInquiry, Transaction, Loan, Repayment], 
-          synchronize: true, 
+          synchronize: false, 
         }
       },
       inject: [ConfigService]
