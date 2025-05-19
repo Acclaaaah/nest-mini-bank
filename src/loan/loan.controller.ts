@@ -1,7 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { LoanService } from './loan.service';
-import { MakeRepaymentDto } from './dto/make-repayment.dto';
-import { Repayment } from './entities/repayment.entity';
 import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -9,13 +7,17 @@ import { RolesGuard } from '../auth/guards/role.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/entities';
 
+interface JWTRequest extends Request {
+    user?: {id: number}
+}
+
 @Controller('loans')
 export class LoanController {
     constructor(private readonly loanService: LoanService) {}
 
     @UseGuards(AuthGuard('jwt'))
     @Post()
-    create(@Body() createLoanDto: CreateLoanDto, @Request() req) {
+    create(@Body() createLoanDto: CreateLoanDto, @Request() req:JWTRequest) {
         const userId = req.user.id;
         return this.loanService.create(createLoanDto, userId);
     }
@@ -23,8 +25,8 @@ export class LoanController {
     @UseGuards(AuthGuard('jwt'), RolesGuard)
     @Roles(Role.Admin) 
     @Get()
-    findAll() {
-        return this.loanService.findAll();
+    findAll(@Request() request: JWTRequest) {
+        return this.loanService.findAll(request.user?.id);
     }
 
     @UseGuards(AuthGuard('jwt'))

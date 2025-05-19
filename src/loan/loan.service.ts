@@ -20,8 +20,10 @@ export class LoanService {
         return await this.loanRepository.save(loan);
     }
 
-    async findAll(): Promise<Loan[]> {
-        return await this.loanRepository.find({ relations: ['user'] });
+    async findAll(userid:number): Promise<Loan[]> {
+        return await this.loanRepository.find({ relations: ['user'], where: {
+            user: {id: userid}
+        }});
     }
 
     async findOne(id: number): Promise<Loan> {
