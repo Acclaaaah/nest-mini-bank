@@ -6,27 +6,30 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/guards/role.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/entities';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 interface JWTRequest extends Request {
-    user?: {id: number}
+    //refer to jwt-auth.guard.ts validate return
+    user?: { userId: number}
 }
 
 @Controller('loans')
 export class LoanController {
     constructor(private readonly loanService: LoanService) {}
-
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'))
     @Post()
     create(@Body() createLoanDto: CreateLoanDto, @Request() req:JWTRequest) {
-        const userId = req.user.id;
+        const userId = req.user.userId;
         return this.loanService.create(createLoanDto, userId);
     }
-
+    
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'), RolesGuard)
     @Roles(Role.Admin) 
     @Get()
     findAll(@Request() request: JWTRequest) {
-        return this.loanService.findAll(request.user?.id);
+        return this.loanService.findAll(request.user?. userId);
     }
 
     @UseGuards(AuthGuard('jwt'))
