@@ -53,7 +53,6 @@ export class TransactionsController {
   @Roles(Role.User)
   @Post('withdraw')
   withdraw(@Body() withdrawDto: WithdrawDto) {
-    const { accountId, amount } = withdrawDto;
-    return this.service.withdraw(accountId, amount);
+    return this.service.withdraw(withdrawDto);
   }
 }
