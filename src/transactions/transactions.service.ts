@@ -2,8 +2,8 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transaction } from './entities/transaction.entity';
-import { Account } from '../accounts/account.entity'; 
-import { TransferDto, FilterTransactionsDto } from './dto/create-transaction.dto'; 
+import { Account } from '../accounts/account.entity';
+import { TransferDto, FilterTransactionsDto } from './dto/create-transaction.dto';
 import { TransactionType } from 'src/entities';
 import { DepositDto } from './dto/deposit.dto';
 
@@ -12,10 +12,10 @@ export class TransactionsService {
   constructor(
     @InjectRepository(Transaction)
     private transactionRepo: Repository<Transaction>,
-    
+
     @InjectRepository(Account)
     private accountRepo: Repository<Account>,
-  ) {}
+  ) { }
 
   async transferFunds(dto: TransferDto) {
     const { fromAccountId, toAccountId, amount } = dto;
@@ -43,7 +43,7 @@ export class TransactionsService {
       amount,
       toAccountId,
     });
-    
+
     const creditTx = this.transactionRepo.create({
       account: to,
       type: TransactionType.CREDIT,
@@ -80,12 +80,12 @@ export class TransactionsService {
     const transactions = await this.getTransactionHistory(accountId, {} as FilterTransactionsDto);
 
     const totalIn = transactions
-      .filter(tx => tx.type === 'CREDIT' || tx.type ===  'DEPOSIT')
+      .filter(tx => tx.type === 'CREDIT' || tx.type === 'DEPOSIT')
 
       .reduce((acc, tx) => acc + Number(tx.amount), 0);
 
     const totalOut = transactions
-      .filter(tx => tx.type === 'DEBIT' || tx.type ===  'WITHDRAW')
+      .filter(tx => tx.type === 'DEBIT' || tx.type === 'WITHDRAW')
 
       .reduce((acc, tx) => acc + Number(tx.amount), 0);
 
@@ -118,6 +118,29 @@ export class TransactionsService {
 
     return this.transactionRepo.save(transaction);
   }
+  async withdraw(depositDto: DepositDto) {
+    const { accountId, amount } = depositDto;
+    const account = await this.accountRepo.findOne({ where: { id: accountId } });
+
+    if (!account) {
+      throw new BadRequestException('Account not found');
+    }
+
+    if (Number(account.balance) < Number(amount)) {
+      throw new BadRequestException('Insufficient funds');
+    }
+
+    account.balance = Number(account.balance) - Number(amount);
+    await this.accountRepo.save(account);
+
+    const transaction = this.transactionRepo.create({
+      account,
+      type: TransactionType.DEBIT,
+      amount,
+    });
+
+    return this.transactionRepo.save(transaction);
+  }
   async getAllTransactions(user: any): Promise<Transaction[]> {
     if (user.role === 'admin') {
       return this.transactionRepo.find({
@@ -125,15 +148,15 @@ export class TransactionsService {
         relations: ['account'],
       });
     }
-  
+
     // Find all transactions where this user is involved (as account owner)
     const userAccounts = await this.accountRepo.find({
       where: { user: { id: user.userId } },
     });
-  
+
     const accountIds = userAccounts.map(acc => acc.id);
     if (accountIds.length === 0) return [];
-  
+
     return this.transactionRepo.find({
       where: accountIds.map(id => ({ account: { id } })),
       order: { createdAt: 'DESC' },
