@@ -1,5 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+// src/accounts/account.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../users/entities/user.entity';
+import { Withdrawal } from '../withdrawals/withdrawal.entity';
+import { ITransaction } from 'src/entities';
+import { Transaction } from 'src/transactions/entities/transaction.entity';
 
 @Entity()
 export class Account {
@@ -13,5 +17,12 @@ export class Account {
   balance!: number;
 
   @ManyToOne(() => User, user => user.accounts)
-  user!: User;
+  user: User;
+
+  @OneToMany(() => Withdrawal, withdrawal => withdrawal.account)
+  withdrawals: Withdrawal[];
+  
+
+  @OneToMany(() => Transaction, trans => trans.account)
+  transactions!: ITransaction[]
 }

@@ -1,9 +1,10 @@
-import { Role } from 'src/enums/role.enum';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { IUser, Role } from 'src/entities';
 import { Account } from 'src/accounts/account.entity';
+import { Loan } from 'src/loan/entities/loan.entity';
 
 @Entity('User')
-export class User {
+export class User implements IUser {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -29,5 +30,9 @@ export class User {
   phoneNumber!: string;
 
   @OneToMany(() => Account, account => account.user)
-  accounts!: Account[];
+  accounts: Account[];
+
+  @OneToMany(() => Loan, loan => loan.user) // Add the OneToMany relationship with Loan
+  loans: Loan[];
+
 }
