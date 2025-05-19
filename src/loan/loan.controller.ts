@@ -20,8 +20,8 @@ export class LoanController {
     @ApiOperation({ summary: 'Create a loan application' })
     @ApiResponse({ status: 201, description: 'Loan created successfully' })
     @Post()
-    create(@Body() createLoanDto: CreateLoanDto, @Request() req) {
-        const userId = req.user.id;
+    create(@Body() createLoanDto: CreateLoanDto, @Request() req: JWTRequest) {
+        const userId = req.user.userId;
         return this.loanService.create(createLoanDto, userId);
     }
     
@@ -30,7 +30,7 @@ export class LoanController {
     @Roles(Role.Admin) 
     @Get()
     findAll(@Request() request: JWTRequest) {
-        return this.loanService.findAll(request.user?. userId);
+        return this.loanService.findAll(request.user?.userId);
     }
 
     @UseGuards(AuthGuard('jwt'))
