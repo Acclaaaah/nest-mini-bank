@@ -6,23 +6,31 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/guards/role.guard';
 import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/entities';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
+
+interface JWTRequest extends Request {
+    //refer to jwt-auth.guard.ts validate return
+    user?: { userId: number}
+}
 
 @Controller('loans')
 export class LoanController {
     constructor(private readonly loanService: LoanService) {}
-
-    @UseGuards(AuthGuard('jwt'))
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Create a loan application' })
+    @ApiResponse({ status: 201, description: 'Loan created successfully' })
     @Post()
-    create(@Body() createLoanDto: CreateLoanDto, @Request() req) {
-        const userId = req.user.id;
+    create(@Body() createLoanDto: CreateLoanDto, @Request() req: JWTRequest) {
+        const userId = req.user.userId;
         return this.loanService.create(createLoanDto, userId);
     }
-
+    
+    @ApiBearerAuth()
     @UseGuards(AuthGuard('jwt'), RolesGuard)
     @Roles(Role.Admin) 
     @Get()
-    findAll() {
-        return this.loanService.findAll();
+    findAll(@Request() request: JWTRequest) {
+        return this.loanService.findAll(request.user?.userId);
     }
 
     @UseGuards(AuthGuard('jwt'))
@@ -70,4 +78,6 @@ export class LoanController {
     remove(@Param('id') id: string) {
         return this.loanService.remove(+id);
     }
+
+   
 }

@@ -5,20 +5,14 @@ import {
   Body,
   Param,
   Query,
-  Request,
-  UseGuards,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import {
-  TransferDto,
-  FilterTransactionsDto,
-} from './dto/create-transaction.dto';
+import { TransferDto, FilterTransactionsDto } from './dto/create-transaction.dto'; 
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/role.decorator';
 import { Role } from 'src/entities';
 import { DepositDto } from './dto/deposit.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/role.guard';
+import { WithdrawDto } from './dto/withdraw.dto'; 
 
 @Controller('transactions')
 export class TransactionsController {
@@ -31,29 +25,34 @@ export class TransactionsController {
     return this.service.transferFunds(transferDto);
   }
 
+  @ApiBearerAuth()
+  @Roles(Role.User)
   @Get(':accountId/history')
   getHistory(
     @Param('accountId') accountId: string,
-    @Query() filterDto: FilterTransactionsDto,
+    @Query() filterDto: FilterTransactionsDto, 
   ) {
     return this.service.getTransactionHistory(accountId, filterDto);
   }
 
+  @ApiBearerAuth()
+  @Roles(Role.User)
   @Get(':accountId/report')
   getReport(@Param('accountId') accountId: string) {
     return this.service.generateReport(accountId);
   }
 
+  @ApiBearerAuth()
+  @Roles(Role.User)
   @Post('deposit')
   deposit(@Body() depositDto: DepositDto) {
     return this.service.deposit(depositDto);
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.User, Role.Admin)
-  @Get()
-  getAll(@Request() req) {
-    return this.service.getAllTransactions(req.user);
+  @Roles(Role.User)
+  @Post('withdraw')
+  withdraw(@Body() withdrawDto: WithdrawDto) {
+    return this.service.withdraw(withdrawDto);
   }
 }

@@ -32,10 +32,12 @@ export class TransferDto {
 }
 
 export class FilterTransactionsDto {
+  @ApiProperty()
   @IsOptional()
   @IsEnum(TransactionType)
   type?: TransactionType;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
   startDate?: string;
