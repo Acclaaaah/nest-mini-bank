@@ -1,4 +1,3 @@
-// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,11 +6,20 @@ import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
-import { Account } from './accounts/account.entity'; 
+import { Account } from './accounts/account.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/role.guard';
 import { AuthModule } from './auth/auth.module';
 import { AccountsModule } from './accounts/account.module'; 
+import { WithdrawalsModule } from './withdrawals/withdrawals.module';
+import { Withdrawal } from './withdrawals/withdrawal.entity';
+import { BalanceInquiryModule } from './balance-inquiry/balance-inquiry.module';
+import { BalanceInquiry } from './balance-inquiry/balance-inquiry.entity';
+import { Transaction } from './transactions/entities/transaction.entity';
+import { TransactionsModule } from './transactions/transactions.module';
+import { Loan } from './loan/entities/loan.entity';
+import { Repayment } from './loan/entities/repayment.entity';
+import { LoanModule } from './loan/loan.module';
 
 @Module({
   imports: [
@@ -29,8 +37,8 @@ import { AccountsModule } from './accounts/account.module';
           username: configService.get('database.username') ||'root',
           password: configService.get('database.pass') ||'root',
           database: 'MiniBankingDB',
-          entities: [User, Account], 
-          synchronize: true, 
+          entities: [User, Account, Withdrawal, BalanceInquiry, Transaction, Loan, Repayment], 
+          synchronize: false, 
         }
       },
       inject: [ConfigService]
@@ -38,6 +46,11 @@ import { AccountsModule } from './accounts/account.module';
     UsersModule,
     AuthModule,
     AccountsModule,
+    WithdrawalsModule,
+    BalanceInquiryModule,
+    TransactionsModule,
+    LoanModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [
